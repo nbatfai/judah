@@ -122,10 +122,10 @@ public:
     ncurses_mutex.lock();
     ui();
     wclear ( vi_w );
-    mvwprintw ( vi_w, 0, 1, " Samu's visual imagery " );
     wmove ( vi_w, 1, 0 );
     waddstr ( vi_w, msg.c_str() );
     box ( vi_w, 0, 0 );
+    mvwprintw ( vi_w, 0, 1, " Samu's visual imagery " );
     wrefresh ( vi_w );
     ncurses_mutex.unlock();
   }
