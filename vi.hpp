@@ -194,7 +194,7 @@ public:
     std::stringstream resp;
 
     resp << std::endl
-         << "Jacob@AI"
+         << "Judah@AI"
 #ifdef QNN_DEBUG
          << "."
          << ql.get_action_count()
