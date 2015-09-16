@@ -26,21 +26,21 @@
  *
  * JACOB, https://github.com/nbatfai/jacob
  *
- * "The son of Isaac is Jacob." The project called Jacob is an experiment 
+ * "The son of Isaac is Jacob." The project called Jacob is an experiment
  * to replace Isaac's (GUI based) visual imagination with a character console.
  *
  * ISAAC, https://github.com/nbatfai/isaac
  *
- * "The son of Samu is Isaac." The project called Isaac is a case study 
- * of using deep Q learning with neural networks for predicting the next 
+ * "The son of Samu is Isaac." The project called Isaac is a case study
+ * of using deep Q learning with neural networks for predicting the next
  * sentence of a conversation.
- * 
+ *
  * SAMU, https://github.com/nbatfai/samu
  *
- * The main purpose of this project is to allow the evaluation and 
- * verification of the results of the paper entitled "A disembodied 
- * developmental robotic agent called Samu Bátfai". It is our hope 
- * that Samu will be the ancestor of developmental robotics chatter 
+ * The main purpose of this project is to allow the evaluation and
+ * verification of the results of the paper entitled "A disembodied
+ * developmental robotic agent called Samu Bátfai". It is our hope
+ * that Samu will be the ancestor of developmental robotics chatter
  * bots that will be able to chat in natural language like humans do.
  *
  */
@@ -57,6 +57,7 @@
 #include <ncurses.h>
 
 Disp Samu::disp;
+std::string Samu::name {"Judah"};
 
 void Samu::FamilyCaregiverShell ( void )
 {
@@ -70,12 +71,13 @@ void Samu::FamilyCaregiverShell ( void )
   if ( sleep_ )
     sleep = sleep_after_ + 1;
 
+  int prev_sec {0};
   for ( ; run_ ; )
     {
-      
+
       try
         {
-	  
+
           disp.cg_read();
 
           if ( ++sleep > sleep_after_ )
@@ -83,14 +85,28 @@ void Samu::FamilyCaregiverShell ( void )
               if ( !sleep_ )
                 {
                   std::cerr << "Isaac went to sleep." << std::endl;
-                  disp.log ( "Isaac went to sleep." );
+                  disp.log ( "\nI went to sleep." );
                 }
               sleep_ = true;
             }
           else
             {
               std::cerr << sleep << " " << std::flush;
-              disp.log ( "." );
+
+              int sec = ( sleep * read_usec_ ) / ( 1000*1000 );
+              if ( sec != prev_sec )
+                {
+                  int after = ( sleep_after_ * read_usec_ ) / ( 1000*1000 );
+
+		  std::stringstream sleep_after;
+
+                  sleep_after << "\nI will go to sleep after ";
+                  sleep_after <<  ( after-sec );
+                  sleep_after <<  " seconds";
+
+                  disp.log ( sleep_after.str() );
+                  prev_sec = sec;
+                }
             }
         }
       catch ( std::string line )
@@ -99,7 +115,7 @@ void Samu::FamilyCaregiverShell ( void )
           if ( sleep_ )
             {
               std::cerr << "Isaac is awake now." << std::endl;
-              disp.log ( "\nIsaac is awake now." );
+              disp.log ( "\nI am awake now." );
             }
           sleep_ = false;
           sleep = 0;
@@ -118,12 +134,12 @@ void Samu::FamilyCaregiverShell ( void )
               catch ( const char* err )
                 {
                   std::cerr << err << std::endl;
-		  disp.log(err);
+                  disp.log ( err );
                 }
             }
         }
 
-      usleep ( 50*1000 );
+      usleep ( read_usec_ );
 
     }
 

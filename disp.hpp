@@ -135,6 +135,7 @@ public:
     ncurses_mutex.lock();
     ui();
     waddstr ( log_iw, msg.c_str() );
+    wrefresh ( log_w );
     wrefresh ( log_iw );
     ncurses_mutex.unlock();
   }
@@ -207,7 +208,7 @@ void ui(void)
 
         box ( shell_w, 0, 0 );
         mvwprintw ( shell_w, 0, 1, " Caregiver shell " );
-        mvwprintw ( shell_w, 1, 1, "Norbi> " );
+        mvwprintw ( shell_w, 1, 1, "Norbi> Type your sentence and press <ENTER>" );
 
         wrefresh ( vi_w );
         wrefresh ( log_w );
