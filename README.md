@@ -1,7 +1,7 @@
 # Judah
 "The son of Jacob is Judah." In the project called Judah we equip Jacob with a text-based user interface. It is our hope that Jacob (Isaac and Samu) will be the ancestor of developmental robotics chatter bots that will be able to chat in natural language like humans do.
 
-![samu_tui](https://cloud.githubusercontent.com/assets/3148120/9881821/ef104308-5bd1-11e5-84e9-e2763ed3764a.png)
+![samu_tui](https://cloud.githubusercontent.com/assets/3148120/9903283/944ed5a2-5c75-11e5-9f97-ca200944edbe.png)
 
 ## Genealogy of Judah
 
