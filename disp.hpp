@@ -134,6 +134,7 @@ public:
   {
     ncurses_mutex.lock();
     ui();
+    msg = "\n" + msg;
     waddstr ( log_iw, msg.c_str() );
     wrefresh ( log_w );
     wrefresh ( log_iw );

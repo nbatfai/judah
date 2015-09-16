@@ -141,7 +141,7 @@ public:
       }
     else
       {
-        throw "\nMy attention diverted elsewhere.";
+        throw "My attention diverted elsewhere.";
       }
 
   }
@@ -304,8 +304,7 @@ public:
 
     std::stringstream resp;
 
-    resp << std::endl
-         << samu.name
+    resp << samu.name
 #ifdef QNN_DEBUG
          << "@"
 	 << (samu.sleep_?"sleep":"awake")

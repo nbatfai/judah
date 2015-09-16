@@ -85,7 +85,7 @@ void Samu::FamilyCaregiverShell ( void )
               if ( !sleep_ )
                 {
                   std::cerr << "Isaac went to sleep." << std::endl;
-                  disp.log ( "\nI went to sleep." );
+                  disp.log ( "I went to sleep." );
                 }
               sleep_ = true;
             }
@@ -100,7 +100,7 @@ void Samu::FamilyCaregiverShell ( void )
 
 		  std::stringstream sleep_after;
 
-                  sleep_after << "\nI will go to sleep after ";
+                  sleep_after << "I will go to sleep after ";
                   sleep_after <<  ( after-sec );
                   sleep_after <<  " seconds";
 
@@ -115,7 +115,7 @@ void Samu::FamilyCaregiverShell ( void )
           if ( sleep_ )
             {
               std::cerr << "Isaac is awake now." << std::endl;
-              disp.log ( "\nI am awake now." );
+              disp.log ( "I am awake now." );
             }
           sleep_ = false;
           sleep = 0;
