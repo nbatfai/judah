@@ -209,7 +209,7 @@ void ui(void)
 
         box ( shell_w, 0, 0 );
         mvwprintw ( shell_w, 0, 1, " Caregiver shell " );
-        mvwprintw ( shell_w, 1, 1, "Norbi> Type your sentence and press <ENTER>" );
+        mvwprintw ( shell_w, 1, 1, "Norbi> Type your sentence and press [ENTER]" );
 
         wrefresh ( vi_w );
         wrefresh ( log_w );

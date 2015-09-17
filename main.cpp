@@ -70,6 +70,22 @@ void save_samu ( int sig )
   exit ( 0 );
 }
 
+double to_samu ( int channel, std::string &msg )
+{
+  double r {0.0};
+
+  try
+    {
+      samu.message ( channel, msg );
+      r = samu.reward();
+    }
+  catch ( const char* err )
+    {
+      std::cerr << err << std::endl;
+    }
+  return r;
+}
+
 int main ( int argc, char **argv )
 {
 
@@ -80,7 +96,6 @@ int main ( int argc, char **argv )
   if ( samuFile )
     samu.load ( samuFile );
 #endif
-
 
   struct sigaction sa;
   sa.sa_handler = save_samu;
@@ -117,6 +132,7 @@ int main ( int argc, char **argv )
   };
 
   int j {0};
+  std::string training_file = samu.get_training_file();
 
   for ( ; samu.run(); )
     {
@@ -124,35 +140,25 @@ int main ( int argc, char **argv )
       if ( samu.sleep() )
         {
           samu.clear_vi();
-          for ( int i {0}; i<7 && samu.sleep(); ++i )
+          if ( samu.get_training_file() == training_file )
+            for ( int i {0}; i<7 && samu.sleep(); ++i )
+              {
+                sum += to_samu ( 11, test[i] );
+              }
+          else
             {
-              try
+              std::fstream train ( samu.get_training_file(),  std::ios_base::in );
+              if ( train )
                 {
-                  samu.message ( 11, test[i] );
-                  sum += samu.reward();
-                }
-              catch ( const char* err )
-                {
-                  std::cerr << err << std::endl;
+                  for ( std::string line; std::getline ( train, line ) && samu.sleep(); )
+                    {
+                      sum += to_samu ( 12, line );
+                    }
+                  train.close();
                 }
             }
+
           std::cerr << "###### " << ++j << "-th iter " << sum << std::endl;
-
-          /*
-                    if ( j == 5 )
-                      {
-                        // samu.t();
-
-                        std::string samuImage {"samu.image.txt"};
-
-                        std::fstream samuFile ( samuImage,  std::ios_base::in );
-                        if ( samuFile )
-                          samu.load ( samuFile );
-
-
-                      }
-          */
-
         }
       else
         sleep ( 1 );

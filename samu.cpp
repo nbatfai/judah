@@ -61,7 +61,7 @@ std::string Samu::name {"Judah"};
 
 void Samu::FamilyCaregiverShell ( void )
 {
-  std::string cmd_prefix = "___";
+  std::string cmd_prefix = "cmd";
 
   fd_set rfds;
   struct timeval tmo;
@@ -98,10 +98,10 @@ void Samu::FamilyCaregiverShell ( void )
                 {
                   int after = ( sleep_after_ * read_usec_ ) / ( 1000*1000 );
 
-		  std::stringstream sleep_after;
+                  std::stringstream sleep_after;
 
                   sleep_after << "I will go to sleep after ";
-                  sleep_after <<  ( after-sec );
+                  sleep_after << ( after-sec );
                   sleep_after <<  " seconds";
 
                   disp.log ( sleep_after.str() );
@@ -122,7 +122,19 @@ void Samu::FamilyCaregiverShell ( void )
 
           if ( !line.compare ( 0, cmd_prefix.length(), cmd_prefix ) )
             {
-              if ( line == cmd_prefix )
+              std::string readCmd {"cmd read"};
+
+              size_t f = line.find ( readCmd );
+              if ( f != std::string::npos )
+                {
+                  f = f+readCmd.length() +1;
+                  if ( f < line.length() )
+                    {
+                      std::string fname = line.substr ( f );
+                      set_training_file ( fname );
+                    }
+                }
+              else
                 NextCaregiver();
             }
           else
