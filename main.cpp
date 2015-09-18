@@ -52,6 +52,7 @@
 #include "samu.hpp"
 
 Samu samu;
+
 bool halted {false};
 
 void save_samu ( int sig )
@@ -70,6 +71,23 @@ void save_samu ( int sig )
   exit ( 0 );
 }
 
+double to_samu ( int channel, SPOTriplets &tv )
+{
+  double r {0.0};
+
+  try
+    {
+      samu.triplet ( channel, tv );
+      r = samu.reward();
+    }
+  catch ( const char* err )
+    {
+      std::cerr << err << std::endl;
+    }
+  return r;
+}
+
+
 double to_samu ( int channel, std::string &msg )
 {
   double r {0.0};
@@ -84,6 +102,42 @@ double to_samu ( int channel, std::string &msg )
       std::cerr << err << std::endl;
     }
   return r;
+}
+
+double to_samu ( int channel, std::string &msg, std::string &key )
+{
+  double r {0.0};
+
+  try
+    {
+      samu.sentence ( channel, msg, key );
+      r = samu.reward();
+    }
+  catch ( const char* err )
+    {
+      std::cerr << err << std::endl;
+    }
+  return r;
+}
+
+std::map<std::string, SPOTriplets> cache;
+
+double read_cache ( std::string & key )
+{
+  double sum {0.0};
+
+  for ( auto t: cache[key] )
+    {
+      /*
+      if ( !samu.sleep() )
+        break;
+      */
+      SPOTriplets tv;
+      tv.push_back ( t );
+      sum += to_samu ( 12, tv );
+    }
+
+  return sum;
 }
 
 int main ( int argc, char **argv )
@@ -147,15 +201,76 @@ int main ( int argc, char **argv )
               }
           else
             {
-              std::fstream train ( samu.get_training_file(),  std::ios_base::in );
-              if ( train )
+              std::string key = samu.get_training_file();
+
+              if ( cache.find ( key ) == cache.end() )
                 {
-                  for ( std::string line; std::getline ( train, line ) && samu.sleep(); )
+
+                  std::fstream triplet_train ( key+".triplets",  std::ios_base::in );
+                  if ( triplet_train )
                     {
-                      sum += to_samu ( 12, line );
+                      std::cerr << "triplets2cache" << std::endl;
+
+                      while ( !triplet_train.eof() && samu.sleep() )
+                        {
+                          SPOTriplet t;
+                          triplet_train >> t;
+                          cache[key].push_back ( t );
+                        }
+
+                      triplet_train.close();
+
+                      std::cerr << "read from cache" << std::endl;
+                      auto start = std::chrono::high_resolution_clock::now();
+
+                      sum = read_cache ( key );
+
+                      std::cerr << std::chrono::duration_cast<std::chrono::milliseconds> (
+                                  std::chrono::high_resolution_clock::now() - start ).count()
+                                << " [ms]" <<  std::endl;
+
                     }
-                  train.close();
+                  else
+                    {
+                      std::cerr << "read sentences from file" << std::endl;
+                      auto start = std::chrono::high_resolution_clock::now();
+
+                      std::fstream train ( samu.get_training_file(),  std::ios_base::in );
+                      if ( train )
+                        {
+                          std::string file = key+".triplets";
+                          for ( std::string line; std::getline ( train, line ) && samu.sleep(); )
+                            {
+
+#ifndef TRIPLET_CACHE
+                              sum += to_samu ( 12, line );
+#else
+                              sum += to_samu ( 12, line, file );
+#endif
+
+                            }
+                          train.close();
+                        }
+
+                      std::cerr << std::chrono::duration_cast<std::chrono::milliseconds> (
+                                  std::chrono::high_resolution_clock::now() - start ).count()
+                                << " [ms]" <<  std::endl;
+
+                    }
+
                 }
+              else
+                {
+                  std::cerr << "read from cache" << std::endl;
+                  auto start = std::chrono::high_resolution_clock::now();
+		  
+                  sum = read_cache ( key );
+		  
+                  std::cerr << std::chrono::duration_cast<std::chrono::milliseconds> (
+                              std::chrono::high_resolution_clock::now() - start ).count()
+                            << " [ms]" <<  std::endl;
+                }
+
             }
 
           std::cerr << "###### " << ++j << "-th iter " << sum << std::endl;

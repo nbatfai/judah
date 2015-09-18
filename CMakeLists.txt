@@ -53,6 +53,9 @@ set(CUDA_LAYERS OFF)
 set(DISP_CURSES ON)
 #set(DISP_CURSES OFF)
 
+# Judah 
+add_definitions(-DTRIPLET_CACHE)
+
 # Jacob 
 add_definitions(-DCHARACTER_CONSOLE)
 
@@ -101,9 +104,9 @@ include_directories(${LINK_GRAMMAR_INCLUDE_DIRS})
 
 if (CUDA_FOUND)
   cuda_compile(CUDASRCS qlc.cu)
-  cuda_add_executable(samu ${CUDASRCS} nlp.hpp nlp.cpp vi.hpp qlc.h ql.hpp samu.hpp samu.cpp main.cpp disp.hpp )
+  cuda_add_executable(samu ${CUDASRCS} nlp.hpp nlp.cpp qlc.h ql.hpp samu.hpp samu.cpp main.cpp disp.hpp )
 else()
-  add_executable(samu nlp.hpp nlp.cpp vi.hpp ql.hpp samu.hpp samu.cpp main.cpp  )
+  add_executable(samu nlp.hpp nlp.cpp ql.hpp samu.hpp samu.cpp main.cpp  )
 endif()
 
 target_link_libraries(samu ${LINK_GRAMMAR_LIBRARIES} ${PNGwriter_LIBRARIES} ${Boost_LIBRARIES} ${CURSES_LIBRARIES})

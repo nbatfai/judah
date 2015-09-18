@@ -124,6 +124,42 @@ public:
     FamilyCaregiverShell();
   }
 
+  void sentence ( int id, std::string sentence, std::string file )
+  {
+    if ( msg_mutex.try_lock() )
+      {
+
+        if ( id != old_talk_id )
+          clear_vi();
+
+        old_talk_id = id;
+
+        SPOTriplets tv = nlp.sentence2triplets ( sentence.c_str() );
+
+        vi << tv;
+
+        if ( tv.size() )
+          {
+            std::fstream cache ( file,  std::ios_base::out|std::ios_base::app );
+            if ( cache )
+              {
+                for ( auto t : tv )
+                  cache << t << std::endl;
+
+                cache.close();
+              }
+          }
+
+        msg_mutex.unlock();
+
+      }
+    else
+      {
+        throw "My attention diverted elsewhere.";
+      }
+
+  }
+
   void sentence ( int id, std::string sentence )
   {
     if ( msg_mutex.try_lock() )
@@ -146,7 +182,7 @@ public:
 
   }
 
-  void triplet ( int id, SPOTriplets triplets )
+  void triplet ( int id, SPOTriplets & triplets )
   {
     if ( msg_mutex.try_lock() )
       {
@@ -167,8 +203,8 @@ public:
       }
 
   }
-  
-  
+
+
   std::string Caregiver()
   {
     if ( caregiver_name_.size() > 0 )
@@ -189,13 +225,13 @@ public:
 
   void save ( std::string & fname )
   {
-    disp.log ("Saving Samu...");
+    disp.log ( "Saving Samu..." );
     vi.save ( fname );
   }
 
   void load ( std::fstream & file )
   {
-    disp.log ("Loading Samu...");
+    disp.log ( "Loading Samu..." );
     vi.load ( file );
   }
 
@@ -203,12 +239,12 @@ public:
   {
     return training_file;
   }
-  
+
   void set_training_file ( const std::string& filename )
   {
     training_file = filename;
   }
-  
+
 private:
 
   class VisualImagery
@@ -430,7 +466,7 @@ private:
   std::vector<std::string> caregiver_name_ {"Norbi", "Nandi", "Matyi", "Greta"};
 
   std::mutex msg_mutex;
-  int old_talk_id {-std::numeric_limits<int>::max()};
+  int old_talk_id {-std::numeric_limits<int>::max() };
 
   std::string training_file;
 };
