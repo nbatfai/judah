@@ -76,7 +76,7 @@ double to_samu ( int channel, std::string &msg )
 
   try
     {
-      samu.message ( channel, msg );
+      samu.sentence ( channel, msg );
       r = samu.reward();
     }
   catch ( const char* err )

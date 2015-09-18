@@ -141,7 +141,7 @@ void Samu::FamilyCaregiverShell ( void )
             {
               try
                 {
-                  message ( -1, line );
+                  sentence ( -1, line );
                 }
               catch ( const char* err )
                 {

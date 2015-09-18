@@ -124,7 +124,7 @@ public:
     FamilyCaregiverShell();
   }
 
-  void message ( int id, std::string sentence )
+  void sentence ( int id, std::string sentence )
   {
     if ( msg_mutex.try_lock() )
       {
@@ -146,6 +146,29 @@ public:
 
   }
 
+  void triplet ( int id, SPOTriplets triplets )
+  {
+    if ( msg_mutex.try_lock() )
+      {
+
+        if ( id != old_talk_id )
+          clear_vi();
+
+        old_talk_id = id;
+
+        vi << triplets;
+
+        msg_mutex.unlock();
+
+      }
+    else
+      {
+        throw "My attention diverted elsewhere.";
+      }
+
+  }
+  
+  
   std::string Caregiver()
   {
     if ( caregiver_name_.size() > 0 )
