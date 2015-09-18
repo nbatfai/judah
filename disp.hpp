@@ -29,21 +29,21 @@
  *
  * JACOB, https://github.com/nbatfai/jacob
  *
- * "The son of Isaac is Jacob." The project called Jacob is an experiment 
+ * "The son of Isaac is Jacob." The project called Jacob is an experiment
  * to replace Isaac's (GUI based) visual imagination with a character console.
  *
  * ISAAC, https://github.com/nbatfai/isaac
  *
- * "The son of Samu is Isaac." The project called Isaac is a case study 
- * of using deep Q learning with neural networks for predicting the next 
+ * "The son of Samu is Isaac." The project called Isaac is a case study
+ * of using deep Q learning with neural networks for predicting the next
  * sentence of a conversation.
- * 
+ *
  * SAMU, https://github.com/nbatfai/samu
  *
- * The main purpose of this project is to allow the evaluation and 
- * verification of the results of the paper entitled "A disembodied 
- * developmental robotic agent called Samu Bátfai". It is our hope 
- * that Samu will be the ancestor of developmental robotics chatter 
+ * The main purpose of this project is to allow the evaluation and
+ * verification of the results of the paper entitled "A disembodied
+ * developmental robotic agent called Samu Bátfai". It is our hope
+ * that Samu will be the ancestor of developmental robotics chatter
  * bots that will be able to chat in natural language like humans do.
  *
  */
@@ -134,7 +134,7 @@ public:
   {
     ncurses_mutex.lock();
     ui();
-    msg = "\n" + msg;
+    msg =  msg + "\n";
     waddstr ( log_iw, msg.c_str() );
     wrefresh ( log_w );
     wrefresh ( log_iw );
@@ -178,7 +178,7 @@ public:
 
 private:
 
-void ui(void)
+  void ui ( void )
   {
     int  max_x, max_y;
 

@@ -407,7 +407,7 @@ private:
   std::vector<std::string> caregiver_name_ {"Norbi", "Nandi", "Matyi", "Greta"};
 
   std::mutex msg_mutex;
-  int old_talk_id {0};
+  int old_talk_id {-std::numeric_limits<int>::max()};
 
   std::string training_file;
 };
