@@ -423,6 +423,7 @@ public:
 
     if ( prcps.find ( triplet ) == prcps.end() )
       {
+		
 #ifndef CHARACTER_CONSOLE
         prcps[triplet] = new Perceptron ( 3, 256*256, 80, 1 );
         //prcps[triplet] = new Perceptron ( 3, 256*256, 400, 1 );
@@ -637,8 +638,10 @@ public:
                   << std::endl;
 
         file >> t;
+	
         prcps[t] = new Perceptron ( file );
       }
+      
   }
 
   void load_frqs ( std::fstream & file )

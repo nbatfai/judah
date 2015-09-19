@@ -85,7 +85,6 @@ public:
     return os;
   }
 
-
   const bool operator== ( const SPOTriplet &other ) const
   {
     if ( s == other.s &&
@@ -96,6 +95,16 @@ public:
       return false;
   }
 
+  const bool empty (void ) const
+  {
+    if ( s.size() == 0 ||
+         p.size() == 0 ||
+         o.size() == 0 )
+      return true;
+    else
+      return false;
+  }  
+  
   const bool operator< ( const SPOTriplet &other ) const
   {
     return s+p+o < other.s+other.p+other.o;

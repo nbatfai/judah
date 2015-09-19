@@ -124,7 +124,7 @@ public:
     FamilyCaregiverShell();
   }
 
-  void sentence ( int id, std::string sentence, std::string file )
+  void sentence ( int id, std::string & sentence, std::string & file )
   {
     if ( msg_mutex.try_lock() )
       {
@@ -160,7 +160,7 @@ public:
 
   }
 
-  void sentence ( int id, std::string sentence )
+  void sentence ( int id, std::string & sentence )
   {
     if ( msg_mutex.try_lock() )
       {
@@ -273,9 +273,9 @@ private:
         }
 
       boost::posix_time::ptime now = boost::posix_time::second_clock::universal_time();
-      std::string image_file = "samu_vi_"+boost::posix_time::to_simple_string ( now ) +".png";
 
 #ifndef CHARACTER_CONSOLE
+      std::string image_file = "samu_vi_"+boost::posix_time::to_simple_string ( now ) +".png";
       char * image_file_p = strdup ( image_file.c_str() );
       pngwriter image ( 256, 256, 65535, image_file_p );
       free ( image_file_p );
