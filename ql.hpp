@@ -327,12 +327,13 @@ public:
 
   double f ( double u, int n )
   {
+    /*
 #ifndef Q_LOOKUP_TABLE
     const int N_e = 30;
 #else
     const int N_e = 10;
 #endif
-
+*/
     if ( n < N_e )
       return 1.5;
     else
@@ -679,8 +680,21 @@ public:
     load_frqs ( file );
   }
 
+  int get_N_e(void) const
+  {
+    return N_e;
+  }
+
+  void set_N_e(int N_e)
+  {
+    this->N_e = N_e;
+  }
+  
+  
 private:
 
+  int N_e = 30;
+  
   QL ( const QL & );
   QL & operator= ( const QL & );
 

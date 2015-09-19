@@ -245,6 +245,12 @@ public:
     training_file = filename;
   }
 
+  void set_N_e(int N_e)
+  {
+    vi.set_N_e(N_e);
+  }
+  
+  
 private:
 
   class VisualImagery
@@ -438,6 +444,12 @@ private:
         }
     }
 
+  void set_N_e(int N_e)
+  {
+    ql.set_N_e(N_e);
+  }
+    
+    
   private:
 
     Samu &samu;

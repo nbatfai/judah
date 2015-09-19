@@ -70,6 +70,9 @@ public:
   SPOTriplet ( std::string &s, std::string &p, std::string &o ) :s ( s ),p ( p ), o ( o )
   {}
 
+  SPOTriplet ( std::string s, std::string p, std::string o ) :s ( s ),p ( p ), o ( o )
+  {}
+
   friend std::ostream & operator<< ( std::ostream & os, const SPOTriplet & t )
   {
     os << t.s << " " << t.p << " "<< t.o;

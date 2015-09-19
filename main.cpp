@@ -43,6 +43,8 @@
  * that Samu will be the ancestor of developmental robotics chatter
  * bots that will be able to chat in natural language like humans do.
  *
+ * [1] Norbert Bátfai, "A disembodied developmental robotic agent
+ * called Samu Bátfai" (submitted manuscript)
  */
 
 #include <iostream>
@@ -172,15 +174,58 @@ int main ( int argc, char **argv )
             << std::endl
             << std::endl;
 
-  std::string test[] =
+
+  std::map<std::string, std::vector<std::string>> tests
   {
-    "A rare black squirrel has become a regular visitor to a suburban garden",
-    "This is a car",
-    "This car is mine",
-    "I have a little car",
-    "The sky is blue",
-    "The little brown bear has eaten all of the honey",
-    "I love Samu"
+    {
+      "sentences of the paper [1]",
+      {
+        "A rare black squirrel has become a regular visitor to a suburban garden",
+        "This is a car",
+        "This car is mine",
+        "I have a little car",
+        "The sky is blue",
+        "The little brown bear has eaten all of the honey",
+        "I love Samu"
+      }
+    },
+    {
+      "introduce myself",
+      {
+        "Who are you",
+        "I am a robot",
+        "What is your name",
+        "My name is Judah",
+        "Where do you live",
+        "I live in Debrecen",
+        "How old are you",
+        "I am one year old",
+        "Where were you born"
+        "I was born is Debrecen"
+        "What is your favourite colour"
+        "My favourite colours are red, white and green"
+      }
+
+    }
+  };
+
+  std::map<std::string, SPOTriplets> test_triplets
+  {
+    {
+      "introduce myself",
+      {
+        { "who", "are", "you" },
+        { "i", "am", "robot"  },
+        {"what",  "is",  "name"},
+        {"name", "is", "Judah"},
+        {"you", "live", "where"},
+        {"I", "live", "Debrecen"},
+        {"you", "are", "how"},
+        {"i", "am", "one"},
+        {"you", "born", "where"},
+        {"I", "born", "Debrecen"}
+      }
+    }
   };
 
   int j {0};
@@ -193,12 +238,18 @@ int main ( int argc, char **argv )
         {
           samu.clear_vi();
           if ( samu.get_training_file() == training_file )
-            for ( int i {0}; i<7 && samu.sleep(); ++i )
-              {
-                sum += to_samu ( 11, test[i] );
-              }
+            {
+              samu.set_N_e ( 8 );
+              for ( int i {0}; i<test_triplets["introduce myself"].size() && samu.sleep(); ++i )
+                {
+                  SPOTriplets tv;
+                  tv.push_back ( test_triplets["introduce myself"][i] );
+                  sum += to_samu ( 11, tv );
+                }
+            }
           else
             {
+              samu.set_N_e ( 30 );
               std::string key = samu.get_training_file();
 
               if ( cache.find ( key ) == cache.end() )
@@ -210,13 +261,13 @@ int main ( int argc, char **argv )
 
                       do
                         {
-			  
+
                           SPOTriplet t;
                           triplet_train >> t;
 
                           if ( !t.empty() )
                             cache[key].push_back ( t );
-			  
+
                         }
                       while ( !triplet_train.eof() && samu.sleep() );
 
