@@ -231,15 +231,47 @@ int main ( int argc, char **argv )
   int j {0};
   std::string training_file = samu.get_training_file();
 
+#ifdef SUPER_OR_REMOTE_COMP
+  for ( int ii {0}; samu.run() && ii < 1000 + 4000 + 5000 + 4000 + 1000; ++ii )
+#else
   for ( ; samu.run(); )
+#endif
     {
       double sum {0.0};
       if ( samu.sleep() )
         {
+
+#ifdef SUPER_OR_REMOTE_COMP
+	  
+          if ( ii == 1000 )
+            {
+              std::cerr << " iter, training file changed " << std::endl;
+              samu.set_training_file ( "bbe" );
+            }
+          else if ( ii == 1000 + 4000 )
+            {
+              std::cerr << " iter, training file changed " << std::endl;
+              training_file == "none";
+              samu.set_training_file ( training_file );
+            }
+          else if ( ii == 1000 + 4000 + 5000 )
+            {
+              std::cerr << " iter, training file changed " << std::endl;
+              samu.set_training_file ( "bbe" );
+            }
+          else if ( ii == 1000 + 4000 + 5000 + 4000)
+            {
+              std::cerr << " iter, training file changed " << std::endl;
+              training_file == "none";
+              samu.set_training_file ( training_file );
+            }
+	  
+#endif
+
           samu.clear_vi();
           if ( samu.get_training_file() == training_file )
             {
-              samu.set_N_e ( 8 );
+              samu.set_N_e ( 15 );
               for ( int i {0}; i<test_triplets["introduce myself"].size() && samu.sleep(); ++i )
                 {
                   SPOTriplets tv;
@@ -314,6 +346,13 @@ int main ( int argc, char **argv )
       else
         sleep ( 1 );
     }
+
+#ifndef Q_LOOKUP_TABLE
+  {
+    std::string samuImage {"samu.image.txt"};
+    samu.save ( samuImage );
+  }
+#endif
 
   return 0;
 }

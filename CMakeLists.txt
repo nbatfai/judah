@@ -47,6 +47,8 @@
 cmake_minimum_required(VERSION 2.8.5)
 project(SAMU)
 
+#add_definitions(-DSUPER_OR_REMOTE_COMP)
+
 #set(CUDA_LAYERS ON)
 set(CUDA_LAYERS OFF)
 

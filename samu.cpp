@@ -56,8 +56,10 @@
 
 #include <ncurses.h>
 
-Disp Samu::disp;
 std::string Samu::name {"Judah"};
+
+#ifdef DISP_CURSES
+Disp Samu::disp;
 
 void Samu::FamilyCaregiverShell ( void )
 {
@@ -157,3 +159,15 @@ void Samu::FamilyCaregiverShell ( void )
 
   run_ = false;
 }
+
+#else
+
+void Samu::FamilyCaregiverShell ( void )
+{
+  for ( ; run_ ; )
+      usleep ( read_usec_ );
+
+  run_ = false;
+}
+
+#endif

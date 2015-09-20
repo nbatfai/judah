@@ -72,7 +72,9 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <sstream>
 
+#ifdef DISP_CURSES
 #include "disp.hpp"
+#endif
 
 class Samu
 {
@@ -225,13 +227,21 @@ public:
 
   void save ( std::string & fname )
   {
+#ifdef DISP_CURSES    
     disp.log ( "Saving Samu..." );
+#else
+    std::cerr << "Saving Samu..." << std::endl;
+#endif    
     vi.save ( fname );
   }
 
   void load ( std::fstream & file )
   {
+#ifdef DISP_CURSES    
     disp.log ( "Loading Samu..." );
+#else
+    std::cerr << "Loading Samu..." << std::endl;
+#endif    
     vi.load ( file );
   }
 
@@ -353,7 +363,9 @@ private:
           con << " " << i << ". " << ci << std::endl;
         }
 
+#ifdef DISP_CURSES    
       samu.disp.vi ( con.str() );
+#endif    
 
 #endif
 
@@ -398,9 +410,10 @@ private:
 
       std::cerr << r << std::endl;
 
+#ifdef DISP_CURSES    
       samu.disp.log ( r );
-
-
+#endif    
+      
 #else
 
       std::cerr << ql ( triplets[0], prg ) << std::endl;
@@ -460,7 +473,9 @@ private:
 
   };
 
+#ifdef DISP_CURSES    
   static Disp disp;
+#endif  
   static std::string name;
 
   bool run_ {true};
