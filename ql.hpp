@@ -29,21 +29,21 @@
  *
  * JACOB, https://github.com/nbatfai/jacob
  *
- * "The son of Isaac is Jacob." The project called Jacob is an experiment 
+ * "The son of Isaac is Jacob." The project called Jacob is an experiment
  * to replace Isaac's (GUI based) visual imagination with a character console.
  *
  * ISAAC, https://github.com/nbatfai/isaac
  *
- * "The son of Samu is Isaac." The project called Isaac is a case study 
- * of using deep Q learning with neural networks for predicting the next 
+ * "The son of Samu is Isaac." The project called Isaac is a case study
+ * of using deep Q learning with neural networks for predicting the next
  * sentence of a conversation.
- * 
+ *
  * SAMU, https://github.com/nbatfai/samu
  *
- * The main purpose of this project is to allow the evaluation and 
- * verification of the results of the paper entitled "A disembodied 
- * developmental robotic agent called Samu Bátfai". It is our hope 
- * that Samu will be the ancestor of developmental robotics chatter 
+ * The main purpose of this project is to allow the evaluation and
+ * verification of the results of the paper entitled "A disembodied
+ * developmental robotic agent called Samu Bátfai". It is our hope
+ * that Samu will be the ancestor of developmental robotics chatter
  * bots that will be able to chat in natural language like humans do.
  *
  */
@@ -328,12 +328,12 @@ public:
   double f ( double u, int n )
   {
     /*
-#ifndef Q_LOOKUP_TABLE
+    #ifndef Q_LOOKUP_TABLE
     const int N_e = 30;
-#else
+    #else
     const int N_e = 10;
-#endif
-*/
+    #endif
+    */
     if ( n < N_e )
       return 1.5;
     else
@@ -424,7 +424,7 @@ public:
 
     if ( prcps.find ( triplet ) == prcps.end() )
       {
-		
+
 #ifndef CHARACTER_CONSOLE
         prcps[triplet] = new Perceptron ( 3, 256*256, 80, 1 );
         //prcps[triplet] = new Perceptron ( 3, 256*256, 400, 1 );
@@ -574,13 +574,18 @@ public:
   {
     samuFile << prcps.size();
 
+    int prev_p {0};
     for ( std::map<SPOTriplet, Perceptron*>::iterator it=prcps.begin(); it!=prcps.end(); ++it )
       {
-        std::cerr << "Saving Samu: "
-                  << ( std::distance ( prcps.begin(), it ) * 100 ) / prcps.size()
-                  << "% (perceptrons)"
-                  << std::endl;
-
+        int p = ( std::distance ( prcps.begin(), it ) * 100 ) / prcps.size();
+        if ( p > prev_p+9 )
+          {
+            std::cerr << "Saving Samu: "
+                      << p
+                      << "% (perceptrons)"
+                      << std::endl;
+            prev_p = p;
+          }
         samuFile << " "
                  << it->first;
         it->second->save ( samuFile );
@@ -592,13 +597,19 @@ public:
     samuFile << std::endl
              << frqs.size();
 
+    int prev_p {0};
     for ( std::map<SPOTriplet, std::map<std::string, int>>::iterator it=frqs.begin(); it!=frqs.end(); ++it )
       {
 
-        std::cerr << "Saving Samu: "
-                  << ( std::distance ( frqs.begin(), it ) * 100 ) / frqs.size()
-                  << "% (frequency table)"
-                  << std::endl;
+        int p = ( std::distance ( frqs.begin(), it ) * 100 ) / frqs.size();
+        if ( p > prev_p+9 )
+          {
+            std::cerr << "Saving Samu: "
+                      << p
+                      << "% (frequency table)"
+                      << std::endl;
+            prev_p = p;
+          }
 
         samuFile << " "
                  << it->first
@@ -630,19 +641,26 @@ public:
     int prcpsSize {0};
     file >> prcpsSize;
 
+    int prev_p {0};
     SPOTriplet t;
     for ( int s {0}; s< prcpsSize; ++s )
       {
-        std::cerr << "Loading Samu: "
-                  << ( s * 100 ) / prcpsSize
-                  << "% (perceptrons)"
-                  << std::endl;
+        int p = ( s * 100 ) / prcpsSize;
+        if ( p > prev_p+9 )
+          {
+            std::cerr << "Loading Samu: "
+                      << p
+                      << "% (perceptrons)"
+                      << std::endl;
+            prev_p = p;
+          }
+
 
         file >> t;
-	
+
         prcps[t] = new Perceptron ( file );
       }
-      
+
   }
 
   void load_frqs ( std::fstream & file )
@@ -650,16 +668,23 @@ public:
     int frqsSize {0};
     file >> frqsSize;
 
+    int prev_pc {0};
     int mapSize {0};
     SPOTriplet t;
     std::string p;
     int n;
     for ( int s {0}; s< frqsSize; ++s )
       {
-        std::cerr << "Loading Samu: "
-                  << ( s * 100 ) / frqsSize
-                  << "% (frequency table)"
-                  << std::endl;
+
+        int pc = ( s * 100 ) / frqsSize;
+        if ( pc > prev_pc+9 )
+          {
+            std::cerr << "Loading Samu: "
+                      << pc
+                      << "% (frequency table)"
+                      << std::endl;
+            prev_pc = pc;
+          }
 
         file >> t;
         file >> mapSize;
@@ -680,21 +705,21 @@ public:
     load_frqs ( file );
   }
 
-  int get_N_e(void) const
+  int get_N_e ( void ) const
   {
     return N_e;
   }
 
-  void set_N_e(int N_e)
+  void set_N_e ( int N_e )
   {
     this->N_e = N_e;
   }
-  
-  
+
+
 private:
 
   int N_e = 30;
-  
+
   QL ( const QL & );
   QL & operator= ( const QL & );
 
