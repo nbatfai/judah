@@ -227,21 +227,21 @@ public:
 
   void save ( std::string & fname )
   {
-#ifdef DISP_CURSES    
+#ifdef DISP_CURSES
     disp.log ( "Saving Samu..." );
 #else
     std::cerr << "Saving Samu..." << std::endl;
-#endif    
+#endif
     vi.save ( fname );
   }
 
   void load ( std::fstream & file )
   {
-#ifdef DISP_CURSES    
+#ifdef DISP_CURSES
     disp.log ( "Loading Samu..." );
 #else
     std::cerr << "Loading Samu..." << std::endl;
-#endif    
+#endif
     vi.load ( file );
   }
 
@@ -255,12 +255,12 @@ public:
     training_file = filename;
   }
 
-  void set_N_e(int N_e)
+  void set_N_e ( int N_e )
   {
-    vi.set_N_e(N_e);
+    vi.set_N_e ( N_e );
   }
-  
-  
+
+
 private:
 
   class VisualImagery
@@ -363,9 +363,9 @@ private:
           con << " " << i << ". " << ci << std::endl;
         }
 
-#ifdef DISP_CURSES    
+#ifdef DISP_CURSES
       samu.disp.vi ( con.str() );
-#endif    
+#endif
 
 #endif
 
@@ -410,10 +410,10 @@ private:
 
       std::cerr << r << std::endl;
 
-#ifdef DISP_CURSES    
+#ifdef DISP_CURSES
       samu.disp.log ( r );
-#endif    
-      
+#endif
+
 #else
 
       std::cerr << ql ( triplets[0], prg ) << std::endl;
@@ -429,6 +429,12 @@ private:
 #ifndef Q_LOOKUP_TABLE
       delete[] img_input;
       image.close();
+#endif
+
+#else
+
+#ifndef Q_LOOKUP_TABLE
+      delete[] img_input;
 #endif
 
 #endif
@@ -457,12 +463,12 @@ private:
         }
     }
 
-  void set_N_e(int N_e)
-  {
-    ql.set_N_e(N_e);
-  }
-    
-    
+    void set_N_e ( int N_e )
+    {
+      ql.set_N_e ( N_e );
+    }
+
+
   private:
 
     Samu &samu;
@@ -473,9 +479,9 @@ private:
 
   };
 
-#ifdef DISP_CURSES    
+#ifdef DISP_CURSES
   static Disp disp;
-#endif  
+#endif
   static std::string name;
 
   bool run_ {true};
