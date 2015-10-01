@@ -327,15 +327,8 @@ public:
 
   double f ( double u, int n )
   {
-    /*
-    #ifndef Q_LOOKUP_TABLE
-    const int N_e = 30;
-    #else
-    const int N_e = 10;
-    #endif
-    */
     if ( n < N_e )
-      return 1.5;
+      return 1.0;
     else
       return u;
   }
@@ -420,7 +413,8 @@ public:
     // r' = reward
 
     double reward =
-      3.0 * triplet.cmp ( prev_action ) - 1.5;
+      //3.0 * triplet.cmp ( prev_action ) - 1.5;
+      ( triplet == prev_action ) ?1.0:-2.0;
 
     if ( prcps.find ( triplet ) == prcps.end() )
       {

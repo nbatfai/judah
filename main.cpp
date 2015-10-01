@@ -205,7 +205,6 @@ int main ( int argc, char **argv )
         "What is your favourite colour"
         "My favourite colours are red, white and green"
       }
-
     }
   };
 
@@ -242,7 +241,6 @@ int main ( int argc, char **argv )
         {
 
 #ifdef SUPER_OR_REMOTE_COMP
-	  
           if ( ii == 1000 )
             {
               std::cerr << " iter, training file changed " << std::endl;
@@ -259,19 +257,18 @@ int main ( int argc, char **argv )
               std::cerr << " iter, training file changed " << std::endl;
               samu.set_training_file ( "bbe" );
             }
-          else if ( ii == 1000 + 4000 + 5000 + 4000)
+          else if ( ii == 1000 + 4000 + 5000 + 4000 )
             {
               std::cerr << " iter, training file changed " << std::endl;
               training_file == "none";
               samu.set_training_file ( training_file );
             }
-	  
 #endif
 
           samu.clear_vi();
           if ( samu.get_training_file() == training_file )
             {
-              samu.set_N_e ( 15 );
+              samu.set_N_e ( 30 );
               for ( int i {0}; i<test_triplets["introduce myself"].size() && samu.sleep(); ++i )
                 {
                   SPOTriplets tv;
@@ -281,7 +278,7 @@ int main ( int argc, char **argv )
             }
           else
             {
-              samu.set_N_e ( 30 );
+              samu.set_N_e ( 35 );
               std::string key = samu.get_training_file();
 
               if ( cache.find ( key ) == cache.end() )

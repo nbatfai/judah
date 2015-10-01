@@ -72,15 +72,15 @@ public:
     int  max_x, max_y;
     getmaxyx ( stdscr, max_y, max_x );
 
-    vi_w = newwin ( 10, max_x, 0, 0 );
-    log_w = newwin ( max_y- 10 - 3, max_x, 10, 0 );
-    log_iw = newwin ( max_y- 10 - 3-2, max_x-2, 11, 1 );
-    shell_w = newwin ( 3, max_x, 10+max_y- 10 - 3, 0 );
+    vi_w = newwin ( 10+2, max_x, 0, 0 );
+    log_w = newwin ( max_y- ( 10+2 ) - 3, max_x, 10+2, 0 );
+    log_iw = newwin ( max_y- ( 10+2 ) - 3-2, max_x-2, 10+2+1, 1 );
+    shell_w = newwin ( 3, max_x, 10+2+max_y- ( 10+2 ) - 3, 0 );
 
     start_color();
-    init_pair ( 1,COLOR_WHITE,COLOR_BLUE );
-    init_pair ( 2,COLOR_WHITE,COLOR_YELLOW );
-    init_pair ( 3, COLOR_YELLOW,    COLOR_BLUE );
+    init_pair ( 1,COLOR_WHITE, COLOR_BLUE );
+    init_pair ( 2,COLOR_WHITE, COLOR_YELLOW );
+    init_pair ( 3, COLOR_YELLOW, COLOR_BLUE );
 
     wbkgd ( vi_w, COLOR_PAIR ( 1 ) );
     wbkgd ( log_w, COLOR_PAIR ( 2 ) );
@@ -189,17 +189,17 @@ private:
         mx = max_x;
         my = max_y;
 
-        wresize ( vi_w, 10, max_x );
+        wresize ( vi_w, 10+2, max_x );
         mvwin ( vi_w, 0, 0 );
 
-        wresize ( log_w, max_y- 10 - 3, max_x );
-        mvwin ( log_w, 10, 0 );
+        wresize ( log_w, max_y- ( 10+2 ) - 3, max_x );
+        mvwin ( log_w, 10+2, 0 );
 
-        wresize ( log_iw, max_y- 10 - 3-2, max_x-2 );
-        mvwin ( log_iw, 11, 1 );
+        wresize ( log_iw, max_y- ( 10+2 ) - 3-2, max_x-2 );
+        mvwin ( log_iw, 10+2+1, 1 );
 
         wresize ( shell_w, 3, max_x );
-        mvwin ( shell_w, 10+max_y- 10 - 3, 0 );
+        mvwin ( shell_w, 10+2+max_y- ( 10+2 ) - 3, 0 );
 
         box ( vi_w, 0, 0 );
         mvwprintw ( vi_w, 0, 1, " Samu's visual imagery " );
