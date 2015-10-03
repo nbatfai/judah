@@ -231,7 +231,8 @@ int main ( int argc, char **argv )
   std::string training_file = samu.get_training_file();
 
 #ifdef SUPER_OR_REMOTE_COMP
-  for ( int ii {0}; samu.run() && ii < 1000 + 4000 + 5000 + 4000 + 1000; ++ii )
+  //for ( int ii {0}; samu.run() && ii < 1000 + 4000 + 5000 + 4000 + 1000; ++ii )
+  for ( int ii {0}; samu.run() && ii < 50000; ++ii )
 #else
   for ( ; samu.run(); )
 #endif
@@ -241,6 +242,19 @@ int main ( int argc, char **argv )
         {
 
 #ifdef SUPER_OR_REMOTE_COMP
+
+          if ( ii == 1 )
+            {
+              std::cerr << " iter, training file changed " << std::endl;
+              samu.set_training_file ( "bbe" );
+            }
+          else if ( ii == 2 )
+            {
+              std::cerr << " iter, training file changed " << std::endl;
+              training_file = "bbe";
+            }
+
+	  /*
           if ( ii == 1000 )
             {
               std::cerr << " iter, training file changed " << std::endl;
@@ -249,7 +263,7 @@ int main ( int argc, char **argv )
           else if ( ii == 1000 + 4000 )
             {
               std::cerr << " iter, training file changed " << std::endl;
-              training_file == "none";
+              training_file = "none";
               samu.set_training_file ( training_file );
             }
           else if ( ii == 1000 + 4000 + 5000 )
@@ -260,9 +274,10 @@ int main ( int argc, char **argv )
           else if ( ii == 1000 + 4000 + 5000 + 4000 )
             {
               std::cerr << " iter, training file changed " << std::endl;
-              training_file == "none";
+              training_file = "none";
               samu.set_training_file ( training_file );
             }
+            */
 #endif
 
           samu.clear_vi();
