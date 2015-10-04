@@ -74,12 +74,12 @@ public:
 
     vi_w = newwin ( 10+2, max_x, 0, 0 );
     log_w = newwin ( max_y- ( 10+2 ) - 3, max_x, 10+2, 0 );
-    log_iw = newwin ( max_y- ( 10+2 ) - 3-2, max_x-2, 10+2+1, 1 );
+    log_iw = newwin ( max_y- ( 10+2 ) - 3 -2, max_x-2, 10+2+1, 1 );
     shell_w = newwin ( 3, max_x, 10+2+max_y- ( 10+2 ) - 3, 0 );
 
     start_color();
     init_pair ( 1,COLOR_WHITE, COLOR_BLUE );
-    init_pair ( 2,COLOR_WHITE, COLOR_YELLOW );
+    init_pair ( 2, COLOR_WHITE, COLOR_YELLOW );
     init_pair ( 3, COLOR_YELLOW, COLOR_BLUE );
 
     wbkgd ( vi_w, COLOR_PAIR ( 1 ) );
@@ -136,6 +136,8 @@ public:
     ui();
     msg =  msg + "\n";
     waddstr ( log_iw, msg.c_str() );
+    box ( log_w, 0, 0 );
+    mvwprintw ( log_w, 0, 1, " Samu's answers " );
     wrefresh ( log_w );
     wrefresh ( log_iw );
     ncurses_mutex.unlock();

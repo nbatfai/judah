@@ -47,14 +47,14 @@
 cmake_minimum_required(VERSION 2.8.5)
 project(SAMU)
 
-# remoote
-#add_definitions(-DSUPER_OR_REMOTE_COMP)
+## remote
+# add_definitions(-DSUPER_OR_REMOTE_COMP)
 #
-##set(CUDA_LAYERS ON)
-#set(CUDA_LAYERS OFF)
+# #set(CUDA_LAYERS ON)
+# set(CUDA_LAYERS OFF)
 #
-##set(DISP_CURSES ON)
-#set(DISP_CURSES OFF)
+# #set(DISP_CURSES ON)
+# set(DISP_CURSES OFF)
 
 # TUI
  #add_definitions(-DSUPER_OR_REMOTE_COMP)

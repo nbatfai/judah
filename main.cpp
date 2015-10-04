@@ -248,7 +248,7 @@ int main ( int argc, char **argv )
               std::cerr << " iter, training file changed " << std::endl;
               samu.set_training_file ( "bbe" );
             }
-          else if ( ii == 2 )
+          else if ( ii == 3 )
             {
               std::cerr << " iter, training file changed " << std::endl;
               training_file = "bbe";
@@ -283,7 +283,7 @@ int main ( int argc, char **argv )
           samu.clear_vi();
           if ( samu.get_training_file() == training_file )
             {
-              samu.set_N_e ( 30 );
+              samu.set_N_e ( 50 );
               for ( int i {0}; i<test_triplets["introduce myself"].size() && samu.sleep(); ++i )
                 {
                   SPOTriplets tv;
@@ -293,7 +293,7 @@ int main ( int argc, char **argv )
             }
           else
             {
-              samu.set_N_e ( 35 );
+              samu.set_N_e ( 50 );
               std::string key = samu.get_training_file();
 
               if ( cache.find ( key ) == cache.end() )

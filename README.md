@@ -16,7 +16,8 @@ The main purpose of this project is to allow the evaluation and verification of 
 
 ## Use cases
 
-- version 0.0.1, 
+- version 0.0.1.exp.a1, this version is used in the experiment labelled with A1.
+
 
 # Samu
 The purpose of this project is only to allow the evaluation and verification of the results of the paper entitled **"A disembodied developmental robotic agent called Samu Bátfai"**. This paper presents Q learning with neural networks approximators used by Samu. 

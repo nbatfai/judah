@@ -370,7 +370,7 @@ private:
 #endif
             }
 #ifdef DISP_CURSES            
-          con << " " << i << ". " << ( (ci.length()<75)?ci:ci.substr(0, 75) ) << std::endl;
+          con << " " << (i+1) << ". " << ( (ci.length()<75)?ci:ci.substr(0, 75) ) << std::endl;
 #endif	  
         }
 
