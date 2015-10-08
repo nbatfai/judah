@@ -124,7 +124,7 @@ double to_samu ( int channel, std::string &msg, std::string &key )
 
 std::map<std::string, SPOTriplets> cache;
 
-double read_cache ( std::string & key )
+double read_cache ( std::string & key, int &cnt, int &brel )
 {
   double sum {0.0};
 
@@ -135,6 +135,8 @@ double read_cache ( std::string & key )
       SPOTriplets tv;
       tv.push_back ( t );
       sum += to_samu ( 12, tv );
+      ++cnt;
+      brel += samu.get_brel();
     }
 
   return sum;
@@ -228,6 +230,7 @@ int main ( int argc, char **argv )
   };
 
   int j {0};
+  int N_e {30};
   std::string training_file = samu.get_training_file();
 
 #ifdef SUPER_OR_REMOTE_COMP
@@ -238,62 +241,66 @@ int main ( int argc, char **argv )
 #endif
     {
       double sum {0.0};
+      int cnt {0};
+      int brel {0};
       if ( samu.sleep() )
         {
 
 #ifdef SUPER_OR_REMOTE_COMP
-
-          if ( ii == 1 )
-            {
-              std::cerr << " iter, training file changed " << std::endl;
-              samu.set_training_file ( "bbe" );
-            }
-          else if ( ii == 3 )
-            {
-              std::cerr << " iter, training file changed " << std::endl;
-              training_file = "bbe";
-            }
-
-	  /*
-          if ( ii == 1000 )
-            {
-              std::cerr << " iter, training file changed " << std::endl;
-              samu.set_training_file ( "bbe" );
-            }
-          else if ( ii == 1000 + 4000 )
-            {
-              std::cerr << " iter, training file changed " << std::endl;
-              training_file = "none";
-              samu.set_training_file ( training_file );
-            }
-          else if ( ii == 1000 + 4000 + 5000 )
-            {
-              std::cerr << " iter, training file changed " << std::endl;
-              samu.set_training_file ( "bbe" );
-            }
-          else if ( ii == 1000 + 4000 + 5000 + 4000 )
-            {
-              std::cerr << " iter, training file changed " << std::endl;
-              training_file = "none";
-              samu.set_training_file ( training_file );
-            }
-            */
+          /*
+                    if ( ii == 1 )
+                      {
+                        std::cerr << " iter, training file changed " << std::endl;
+                        samu.set_training_file ( "bbe" );
+                      }
+                    else if ( ii == 3 )
+                      {
+                        std::cerr << " iter, training file changed " << std::endl;
+                        training_file = "bbe";
+                      }
+          */
+          /*
+                if ( ii == 1000 )
+                  {
+                    std::cerr << " iter, training file changed " << std::endl;
+                    samu.set_training_file ( "bbe" );
+                  }
+                else if ( ii == 1000 + 4000 )
+                  {
+                    std::cerr << " iter, training file changed " << std::endl;
+                    training_file = "none";
+                    samu.set_training_file ( training_file );
+                  }
+                else if ( ii == 1000 + 4000 + 5000 )
+                  {
+                    std::cerr << " iter, training file changed " << std::endl;
+                    samu.set_training_file ( "bbe" );
+                  }
+                else if ( ii == 1000 + 4000 + 5000 + 4000 )
+                  {
+                    std::cerr << " iter, training file changed " << std::endl;
+                    training_file = "none";
+                    samu.set_training_file ( training_file );
+                  }
+                  */
 #endif
 
           samu.clear_vi();
           if ( samu.get_training_file() == training_file )
             {
-              samu.set_N_e ( 50 );
+              samu.set_N_e ( N_e );
               for ( int i {0}; i<test_triplets["introduce myself"].size() && samu.sleep(); ++i )
                 {
                   SPOTriplets tv;
                   tv.push_back ( test_triplets["introduce myself"][i] );
                   sum += to_samu ( 11, tv );
+                  ++cnt;
+                  brel += samu.get_brel();
                 }
             }
           else
             {
-              samu.set_N_e ( 50 );
+              samu.set_N_e ( N_e );
               std::string key = samu.get_training_file();
 
               if ( cache.find ( key ) == cache.end() )
@@ -317,7 +324,7 @@ int main ( int argc, char **argv )
 
                       triplet_train.close();
 
-                      sum = read_cache ( key );
+                      sum = read_cache ( key, cnt, brel );
 
                     }
                   else
@@ -335,6 +342,8 @@ int main ( int argc, char **argv )
 #else
                               sum += to_samu ( 12, line, file );
 #endif
+                              ++cnt;
+                              brel += samu.get_brel();
 
                             }
                           train.close();
@@ -346,13 +355,26 @@ int main ( int argc, char **argv )
               else
                 {
 
-                  sum = read_cache ( key );
+                  sum = read_cache ( key, cnt, brel );
 
                 }
 
             }
 
-          std::cerr << "###### " << ++j << "-th iter " << sum << std::endl;
+          //std::cerr << "###### " << ++j << "-th iter " << sum << std::endl;
+          double mbrel = ( double ) brel/ ( double ) cnt;
+          int bad = ( cnt-sum ) /3;
+          std::cerr << ++j << "-th iter, error: " << sum << " (good: " << ( cnt-bad )
+                    << ", bad: " << bad << ") bogorelev: " << mbrel << std::endl;
+
+          if ( mbrel > 60.0 && cnt-bad < cnt-(cnt/10) )
+            {
+              samu.scale_N_e();
+              N_e += 2;
+
+              std::cerr << " iter, N structure rescaled " << std::endl;
+
+            }
 
         }
       else

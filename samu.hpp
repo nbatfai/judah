@@ -260,6 +260,20 @@ public:
     vi.set_N_e ( N_e );
   }
 
+  void clear_N_e ( void )
+  {
+    vi.clearn();
+  }
+
+  void scale_N_e ( void )
+  {
+    vi.scalen();
+  }
+
+  int get_brel ( void )
+  {
+    return vi.brel();
+  }
 
 private:
 
@@ -317,9 +331,9 @@ private:
           prg += triplet.p.c_str();
           prg += triplet.o.c_str();
 
-	  int cnt {0};
-	  while (cnt < 80)
-	    cnt += std::snprintf ( stmt_buffer+cnt, 1024-cnt, "%s.%s(%s);", triplet.s.c_str(), triplet.p.c_str(), triplet.o.c_str() );
+          int cnt {0};
+          while ( cnt < 80 )
+            cnt += std::snprintf ( stmt_buffer+cnt, 1024-cnt, "%s.%s(%s);", triplet.s.c_str(), triplet.p.c_str(), triplet.o.c_str() );
 
 #ifndef CHARACTER_CONSOLE
           char font[] = "/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf";
@@ -351,27 +365,27 @@ private:
 #else
       double *img_input = new double[10*80];
 
-#ifdef DISP_CURSES      
+#ifdef DISP_CURSES
       std::stringstream con;
 #endif
-      
+
       for ( int i {0}; i<10; ++i )
         {
-#ifdef DISP_CURSES	  
+#ifdef DISP_CURSES
           std::string ci;
-#endif	  
+#endif
           for ( int j {0}; j<80; ++j )
             {
               img_input[i*80+j] = ( ( double ) console[i][j] ) / 255.0;
 
-#ifdef DISP_CURSES	      
+#ifdef DISP_CURSES
               if ( isgraph ( console[i][j] ) )
                 ci += console[i][j];
 #endif
             }
-#ifdef DISP_CURSES            
-          con << " " << (i+1) << ". " << ( (ci.length()<75)?ci:ci.substr(0, 75) ) << std::endl;
-#endif	  
+#ifdef DISP_CURSES
+          con << " " << ( i+1 ) << ". " << ( ( ci.length() <75 ) ?ci:ci.substr ( 0, 75 ) ) << std::endl;
+#endif
         }
 
 #ifdef DISP_CURSES
@@ -479,6 +493,20 @@ private:
       ql.set_N_e ( N_e );
     }
 
+    void clearn ( void )
+    {
+      ql.clearn();
+    }
+
+    void scalen ( void )
+    {
+      ql.scalen();
+    }
+
+    int brel ( void )
+    {
+      return ql.get_action_relevance();
+    }
 
   private:
 

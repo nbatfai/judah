@@ -333,7 +333,7 @@ public:
       return u;
   }
 
-#ifdef QNN_DEBUG
+#ifdef QNN_DEBUG_BREL
   int get_action_count() const
   {
     return frqs.size();
@@ -368,7 +368,7 @@ public:
     double min_f = -std::numeric_limits<double>::max();
     SPOTriplet ap;
 
-#ifdef QNN_DEBUG
+#ifdef QNN_DEBUG_BREL
     double sum {0.0}, rel;
     double a = std::numeric_limits<double>::max(), b = -std::numeric_limits<double>::max();
 #endif
@@ -379,7 +379,7 @@ public:
         double  q_spap = ( * ( it->second ) ) ( image );
         double explor = f ( q_spap, frqs[it->first][prg] );
 
-#ifdef QNN_DEBUG
+#ifdef QNN_DEBUG_BREL
         sum += q_spap;
 
         if ( q_spap > b )
@@ -393,7 +393,7 @@ public:
           {
             min_f = explor;
             ap = it->first;
-#ifdef QNN_DEBUG
+#ifdef QNN_DEBUG_BREL
             rel = q_spap;
 #endif
           }
@@ -423,8 +423,8 @@ public:
         prcps[triplet] = new Perceptron ( 3, 256*256, 80, 1 );
         //prcps[triplet] = new Perceptron ( 3, 256*256, 400, 1 );
 #else
-        //prcps[triplet] = new Perceptron ( 3, 10*80, 32, 1 ); //exp.a1
-	prcps[triplet] = new Perceptron ( 3, 10*80, 64, 1 ); //exp.a1	
+        prcps[triplet] = new Perceptron ( 3, 10*80, 32, 1 ); //exp.a1
+        //prcps[triplet] = new Perceptron ( 3, 10*80, 64, 1 ); //exp.a4
 #endif
       }
 
@@ -563,6 +563,34 @@ public:
   double alpha ( int n )
   {
     return 1.0/ ( ( ( double ) n ) + 1.0 );
+  }
+
+  void clearn ( void )
+  {
+
+    for ( std::map<SPOTriplet, std::map<std::string, int>>::iterator it=frqs.begin(); it!=frqs.end(); ++it )
+      {
+
+        for ( std::map<std::string, int>::iterator itt=it->second.begin(); itt!=it->second.end(); ++itt )
+          {
+            itt->second = 0;
+          }
+      }
+
+  }
+
+  void scalen ( void )
+  {
+
+    for ( std::map<SPOTriplet, std::map<std::string, int>>::iterator it=frqs.begin(); it!=frqs.end(); ++it )
+      {
+
+        for ( std::map<std::string, int>::iterator itt=it->second.begin(); itt!=it->second.end(); ++itt )
+          {
+            itt->second -= ( itt->second / 5 );
+          }
+      }
+
   }
 
   void save_prcps ( std::fstream & samuFile )

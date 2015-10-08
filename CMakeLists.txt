@@ -64,7 +64,7 @@ project(SAMU)
 
  set(DISP_CURSES ON)
  #set(DISP_CURSES OFF)
-
+ 
 # Judah 
 add_definitions(-DTRIPLET_CACHE)
 
@@ -74,6 +74,7 @@ add_definitions(-DCHARACTER_CONSOLE)
 # uncomment to use Q lookup table (for test purposes only)
 #add_definitions(-DQ_LOOKUP_TABLE)
 
+add_definitions(-DQNN_DEBUG_BREL)
 add_definitions(-DQNN_DEBUG)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread -O3 -lm")
