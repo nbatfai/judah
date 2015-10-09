@@ -72,6 +72,9 @@ public:
     int  max_x, max_y;
     getmaxyx ( stdscr, max_y, max_x );
 
+    mx = 0;
+    my = 0;
+    
     vi_w = newwin ( 10+2, max_x, 0, 0 );
     log_w = newwin ( max_y- ( 10+2 ) - 3, max_x, 10+2, 0 );
     log_iw = newwin ( max_y- ( 10+2 ) - 3 -2, max_x-2, 10+2+1, 1 );
@@ -113,7 +116,6 @@ public:
   {
     ncurses_mutex.lock();
     ui();
-    //wclear ( shell_w );
     werase ( shell_w );    
     box ( shell_w, 0, 0 );
     mvwprintw ( shell_w, 0, 1, " Caregiver shell " );
@@ -127,7 +129,6 @@ public:
   {
     ncurses_mutex.lock();
     ui();
-    //wclear ( vi_w );
     werase ( vi_w );
     wmove ( vi_w, 1, 0 );
     waddstr ( vi_w, msg.c_str() );
@@ -198,17 +199,21 @@ private:
         mx = max_x;
         my = max_y;
 
-        wresize ( vi_w, 10+2, max_x );
+        wresize ( vi_w, 10+2, mx );
         mvwin ( vi_w, 0, 0 );
+	werase( vi_w );
 
-        wresize ( log_w, max_y- ( 10+2 ) - 3, max_x );
+        wresize ( log_w, my- ( 10+2 ) - 3, mx );
         mvwin ( log_w, 10+2, 0 );
+	werase( log_w );
 
-        wresize ( log_iw, max_y- ( 10+2 ) - 3-2, max_x-2 );
+        wresize ( log_iw, my- ( 10+2 ) - 3-2, mx-2 );
         mvwin ( log_iw, 10+2+1, 1 );
+	werase( log_iw );
 
-        wresize ( shell_w, 3, max_x );
-        mvwin ( shell_w, 10+2+max_y- ( 10+2 ) - 3, 0 );
+        wresize ( shell_w, 3, mx );
+        mvwin ( shell_w, 10+2+my- ( 10+2 ) - 3, 0 );
+	werase( shell_w );
 
         box ( vi_w, 0, 0 );
         mvwprintw ( vi_w, 0, 1, " Samu's visual imagery " );
