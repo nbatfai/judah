@@ -230,8 +230,10 @@ int main ( int argc, char **argv )
   };
 
   int j {0};
-  int N_e {30};
+  int N_e {5};
   std::string training_file = samu.get_training_file();
+  double prev_mbrel {0};
+  int mbrelc {0};
 
 #ifdef SUPER_OR_REMOTE_COMP
   //for ( int ii {0}; samu.run() && ii < 1000 + 4000 + 5000 + 4000 + 1000; ++ii )
@@ -362,19 +364,36 @@ int main ( int argc, char **argv )
             }
 
           //std::cerr << "###### " << ++j << "-th iter " << sum << std::endl;
+
           double mbrel = ( double ) brel/ ( double ) cnt;
           int bad = ( cnt-sum ) /3;
-          std::cerr << ++j << "-th iter, error: " << sum << " (good: " << ( cnt-bad )
-                    << ", bad: " << bad << ") bogorelev: " << mbrel << std::endl;
+          std::cerr << ++j
+                    << "-th iter, error: "
+                    << cnt -sum
+                    << " ("
+                    << sum
+                    << ", good: "
+                    << ( cnt-bad )
+                    << ", bad: "
+                    << bad
+                    << ") bogorelev: "
+                    << mbrel << std::endl;
 
-          if ( mbrel > 60.0 && cnt-bad < cnt-(cnt/10) )
+          if ( prev_mbrel == mbrel )
+            ++mbrelc;
+          else
+            mbrelc = 0;
+
+          if ( mbrel > 35.0 && mbrelc > 50 && cnt-bad <= cnt- ( cnt/10 ) )
             {
               samu.scale_N_e();
-              N_e += 2;
+              N_e += 5;
 
               std::cerr << " iter, N structure rescaled " << std::endl;
 
             }
+
+          prev_mbrel = mbrel;
 
         }
       else

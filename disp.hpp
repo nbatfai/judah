@@ -113,7 +113,8 @@ public:
   {
     ncurses_mutex.lock();
     ui();
-    wclear ( shell_w );
+    //wclear ( shell_w );
+    werase ( shell_w );    
     box ( shell_w, 0, 0 );
     mvwprintw ( shell_w, 0, 1, " Caregiver shell " );
     mvwprintw ( shell_w, 1, 1, "Norbi> " );
@@ -126,7 +127,8 @@ public:
   {
     ncurses_mutex.lock();
     ui();
-    wclear ( vi_w );
+    //wclear ( vi_w );
+    werase ( vi_w );
     wmove ( vi_w, 1, 0 );
     waddstr ( vi_w, msg.c_str() );
     box ( vi_w, 0, 0 );
