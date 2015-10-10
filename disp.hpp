@@ -74,7 +74,7 @@ public:
 
     mx = 0;
     my = 0;
-    
+
     vi_w = newwin ( 10+2, max_x, 0, 0 );
     log_w = newwin ( max_y- ( 10+2 ) - 3, max_x, 10+2, 0 );
     log_iw = newwin ( max_y- ( 10+2 ) - 3 -2, max_x-2, 10+2+1, 1 );
@@ -88,8 +88,8 @@ public:
     */
     init_pair ( 1, COLOR_BLACK, COLOR_WHITE );
     init_pair ( 2, COLOR_WHITE, COLOR_YELLOW );
-    init_pair ( 3, COLOR_BLACK, COLOR_WHITE );    
-    
+    init_pair ( 3, COLOR_BLACK, COLOR_WHITE );
+
     wbkgd ( vi_w, COLOR_PAIR ( 1 ) );
     wbkgd ( log_w, COLOR_PAIR ( 2 ) );
     wbkgd ( log_iw, COLOR_PAIR ( 2 ) );
@@ -116,7 +116,7 @@ public:
   {
     ncurses_mutex.lock();
     ui();
-    werase ( shell_w );    
+    werase ( shell_w );
     box ( shell_w, 0, 0 );
     mvwprintw ( shell_w, 0, 1, " Caregiver shell " );
     mvwprintw ( shell_w, 1, 1, "Norbi> " );
@@ -127,26 +127,27 @@ public:
 
   void vi ( std::string msg )
   {
-    ncurses_mutex.lock();
-    ui();
-    werase ( vi_w );
-    wmove ( vi_w, 1, 0 );
-    waddstr ( vi_w, msg.c_str() );
-    box ( vi_w, 0, 0 );
-    mvwprintw ( vi_w, 0, 1, " Samu's visual imagery " );
-    wrefresh ( vi_w );
-    ncurses_mutex.unlock();
+    if ( ncurses_mutex.try_lock() )
+      {
+        ui();
+        werase ( vi_w );
+        wmove ( vi_w, 1, 0 );
+        waddstr ( vi_w, msg.c_str() );
+        box ( vi_w, 0, 0 );
+        mvwprintw ( vi_w, 0, 1, " Samu's visual imagery " );
+        wrefresh ( vi_w );
+        ncurses_mutex.unlock();
+      }
   }
 
   void log ( std::string msg )
   {
     ncurses_mutex.lock();
-    ui();
+    ui();    
     msg =  msg + "\n";
     waddstr ( log_iw, msg.c_str() );
     box ( log_w, 0, 0 );
     mvwprintw ( log_w, 0, 1, " Samu's answers " );
-    wrefresh ( log_w );
     wrefresh ( log_iw );
     ncurses_mutex.unlock();
   }
@@ -201,19 +202,19 @@ private:
 
         wresize ( vi_w, 10+2, mx );
         mvwin ( vi_w, 0, 0 );
-	werase( vi_w );
+        werase ( vi_w );
 
         wresize ( log_w, my- ( 10+2 ) - 3, mx );
         mvwin ( log_w, 10+2, 0 );
-	werase( log_w );
+        werase ( log_w );
 
         wresize ( log_iw, my- ( 10+2 ) - 3-2, mx-2 );
         mvwin ( log_iw, 10+2+1, 1 );
-	werase( log_iw );
+        werase ( log_iw );
 
         wresize ( shell_w, 3, mx );
         mvwin ( shell_w, 10+2+my- ( 10+2 ) - 3, 0 );
-	werase( shell_w );
+        werase ( shell_w );
 
         box ( vi_w, 0, 0 );
         mvwprintw ( vi_w, 0, 1, " Samu's visual imagery " );
