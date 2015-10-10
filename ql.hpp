@@ -328,7 +328,7 @@ public:
   double f ( double u, int n )
   {
     if ( n < N_e )
-      return 1.0;
+      return max_reward;
     else
       return u;
   }
@@ -414,8 +414,9 @@ public:
 
     double reward =
       //3.0 * triplet.cmp ( prev_action ) - 1.5;
-      ( triplet == prev_action ) ?1.0:-2.0;
-
+      //( triplet == prev_action ) ?1.0:-2.0;
+      ( triplet == prev_action ) ?max_reward:-max_reward;
+      
     if ( prcps.find ( triplet ) == prcps.end() )
       {
 
@@ -741,6 +742,11 @@ public:
     this->N_e = N_e;
   }
 
+  double get_max_reward ( void ) const
+  {
+    return max_reward;
+  }
+  
 
 private:
 
@@ -770,6 +776,7 @@ private:
   std::string prev_state;
 
   double prev_reward { -std::numeric_limits<double>::max() };
+  double max_reward { 1.2 };  
 #ifndef CHARACTER_CONSOLE
   double prev_image [256*256];
 #else

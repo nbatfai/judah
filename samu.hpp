@@ -275,6 +275,11 @@ public:
     return vi.brel();
   }
 
+  double get_max_reward ( void ) const
+  {
+    return vi.get_max_reward();
+  }
+
 private:
 
   class VisualImagery
@@ -506,6 +511,11 @@ private:
     int brel ( void )
     {
       return ql.get_action_relevance();
+    }
+
+    double get_max_reward ( void ) const
+    {
+      return ql.get_max_reward();
     }
 
   private:

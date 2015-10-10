@@ -366,10 +366,10 @@ int main ( int argc, char **argv )
           //std::cerr << "###### " << ++j << "-th iter " << sum << std::endl;
 
           double mbrel = ( double ) brel/ ( double ) cnt;
-          int bad = ( cnt-sum ) /3;
+          int bad = ( cnt-sum/samu.get_max_reward() ) /2;
           std::cerr << ++j
                     << "-th iter, error: "
-                    << cnt -sum
+                    << cnt*samu.get_max_reward() - sum
                     << " ("
                     << sum
                     << ", good: "
@@ -379,16 +379,16 @@ int main ( int argc, char **argv )
                     << ") bogorelev: "
                     << mbrel << std::endl;
 
-          if ( prev_mbrel == mbrel )
+          if ( abs(prev_mbrel - mbrel) < 1.0 )
             ++mbrelc;
           else
             mbrelc = 0;
 
-          if ( mbrel > 35.0 && mbrelc > 50 && cnt-bad <= cnt- ( cnt/10 ) )
+          if ( /*mbrel > 35.0 &&*/ mbrelc > 50 && cnt-bad <= cnt- ( cnt/10 ) )
             {
               samu.scale_N_e();
               N_e += 5;
-
+mbrelc = 0;
               std::cerr << " iter, N structure rescaled " << std::endl;
 
             }
