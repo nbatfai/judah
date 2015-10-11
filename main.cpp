@@ -232,6 +232,9 @@ int main ( int argc, char **argv )
   int j {0};
   int N_e {5};
   std::string training_file = samu.get_training_file();
+
+  //samu.set_training_file ( "bbe" );
+
   double prev_mbrel {0};
   int mbrelc {0};
 
@@ -242,6 +245,7 @@ int main ( int argc, char **argv )
   for ( ; samu.run(); )
 #endif
     {
+      auto start = std::chrono::high_resolution_clock::now();
       double sum {0.0};
       int cnt {0};
       int brel {0};
@@ -368,7 +372,7 @@ int main ( int argc, char **argv )
           double mbrel = ( double ) brel/ ( double ) cnt;
           int bad = ( cnt-sum/samu.get_max_reward() ) /2;
           std::cerr << ++j
-                    << "-th iter, error: "
+                    << "-th iter, err: "
                     << cnt*samu.get_max_reward() - sum
                     << " ("
                     << sum
@@ -376,10 +380,15 @@ int main ( int argc, char **argv )
                     << ( cnt-bad )
                     << ", bad: "
                     << bad
-                    << ") bogorelev: "
-                    << mbrel << std::endl;
+                    << "), brel%: "
+                    << mbrel
+                    << ", "
+                    << std::chrono::duration_cast<std::chrono::milliseconds> (
+                      std::chrono::high_resolution_clock::now() - start ).count()
+                    << " ms "
+                    << std::endl;
 
-          if ( abs(prev_mbrel - mbrel) < 1.0 )
+          if ( abs ( prev_mbrel - mbrel ) < 1.0 )
             ++mbrelc;
           else
             mbrelc = 0;
@@ -388,7 +397,7 @@ int main ( int argc, char **argv )
             {
               samu.scale_N_e();
               N_e += 5;
-mbrelc = 0;
+              mbrelc = 0;
               std::cerr << " iter, N structure rescaled " << std::endl;
 
             }
