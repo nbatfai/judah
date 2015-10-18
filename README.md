@@ -13,6 +13,11 @@ The main purpose of this project is to allow the evaluation and verification of 
 *"The son of Isaac is Jacob."* The project called Jacob is an experiment to replace Isaac's (GUI based) visual imagination with a character console. 
 4. [Judah](https://github.com/nbatfai/judah)
 *"The son of Jacob is Judah."* In the project called Judah we equip Jacob with a text-based user interface.
+5. [Super-Judah](https://github.com/nbatfai/super-judah)
+6. [Perez](https://github.com/nbatfai/perez)
+*"The son of Judah is Perez."* The project called Perez allows to perform experiments to test several parameter settings. Here each experiment is implemented as a separate git branch.
+7. [Hezron](https://github.com/nbatfai/Hezron)
+*"The son of Perez is Hezron."* 
 
 ## Use cases
 
