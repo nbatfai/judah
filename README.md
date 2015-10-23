@@ -16,8 +16,11 @@ The main purpose of this project is to allow the evaluation and verification of 
 5. [Super-Judah](https://github.com/nbatfai/super-judah)
 6. [Perez](https://github.com/nbatfai/perez)
 *"The son of Judah is Perez."* The project called Perez allows to perform experiments to test several parameter settings. Here each experiment is implemented as a separate git branch.
-7. [Hezron](https://github.com/nbatfai/Hezron)
-*"The son of Perez is Hezron."* 
+7. [Hezron](https://github.com/nbatfai/hezron)
+*"The son of Perez is Hezron."* The project called Hezron gives the opportunity to experiment with different arrangements of SPO triplets in the visual imagery.
+8. [Ram](https://github.com/nbatfai/ram)
+*"The son of Hezron is Ram."* The project called Ram allows to experiment with different deep Q learning algorithms to express feelings when he is talking.
+
 
 ## Use cases
 
@@ -25,12 +28,19 @@ The main purpose of this project is to allow the evaluation and verification of 
 
 
 # Samu
-The purpose of this project is only to allow the evaluation and verification of the results of the paper entitled **"A disembodied developmental robotic agent called Samu Bátfai"**. This paper presents Q learning with neural networks approximators used by Samu. 
+One of the purpose of the original Samu project was only to allow the evaluation and verification of the results of the paper entitled 
+**"A disembodied developmental robotic agent called Samu Bátfai"**. 
+This paper presents Q learning with neural networks approximators used by Samu. It is our hope and goal that Samu 
+will be the ancestor of developmental robotics chatter bots that will be able to talk and read in natural language like humans do.
+At this moment Samu is the generic name of rapid prototypes that facilitate achieving this goal.
 
-It is our hope that Samu will be the ancestor of developmental robotics chatter bots that will be able to chat in natural language like humans do.
+## Highlights of Samu
 
-## Usage 
-The two use cases shown in the paper entitled **"A disembodied developmental robotic agent called Samu Bátfai"** are presented in a YouTube video at
-[https://youtu.be/qAhxVQk-dvY](https://youtu.be/qAhxVQk-dvY) 
+Samu
 
-Try another fork of this project in case you want to use Samu as a chat program. The first official fork of Samu, called Isaac, will be public soon. Isaac's repository will be available a https://github.com/nbatfai/isaac
+1. directly implements the definition of machine consciousness (such as the definitions of conscious and intuitive computer programs) 
+introduced in the paper entitled [Conscious Machines and Consciousness Oriented Programming](http://arxiv.org/abs/1108.2865).
+2. corresponds the principles of Developmental Robotics, [Some Basic Principles of Developmental Robotics](http://ieeexplore.ieee.org/xpl/login.jsp?tp=&arnumber=5200465&url=http%3A%2F%2Fieeexplore.ieee.org%2Fiel5%2F4563672%2F5290358%2F05200465).
+3. applies Q learning with neural networks approximators
+4. uses multilayer perceptrons for approximation of the Q function, 
+it is a deep Q learning feature, [Human-level control through deep reinforcement learning](http://www.nature.com/nature/journal/v518/n7540/full/nature14236.html)
