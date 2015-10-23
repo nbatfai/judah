@@ -3,6 +3,8 @@
 
 ![samu_tui](https://cloud.githubusercontent.com/assets/3148120/9903283/944ed5a2-5c75-11e5-9f97-ca200944edbe.png)
 
+See also the page [Family Robotics - Deep Q-learning with Samu](http://shrek.unideb.hu/~nbatfai/)
+
 ## Genealogy of Judah
 
 1. [Samu](https://github.com/nbatfai/samu)
